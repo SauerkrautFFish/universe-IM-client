@@ -1,0 +1,23 @@
+{
+  "id": "3874932",
+  "name": "universe-im",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1279441",
+      "name": "密码",
+      "font_class": "mima",
+      "unicode": "e660",
+      "unicode_decimal": 58976
+    },
+    {
+      "icon_id": "4676491",
+      "name": "账号登录",
+      "font_class": "zhanghaodenglu",
+      "unicode": "e70d",
+      "unicode_decimal": 59149
+    }
+  ]
+}

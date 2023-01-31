@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+	<link href="icon_font/iconfont.css" rel="stylesheet"/>
+	<link href="css/login.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+</head>
+<body>	
+	
+	<h4 style="text-align:center;">Connect Universe</h4>
+	
+	<form class="mui-input-group" id="loginForm">
+	    <div class="mui-input-row">
+			<span class="mui-icon iconfont icon-zhanghaodenglu"></span>
+			<input type="text" class="mui-input-clear" style="width:80%;" placeholder="请输入邮箱......">
+	    </div>
+	    <div class="mui-input-row">
+			<span class="mui-icon iconfont icon-mima"></span>
+	        <input type="password" class="mui-input-password" style="width:80%;" placeholder="请输入密码......">
+	    </div>
+		<div class="mui-input-row">
+		  <a href="pages/register_account.html" class="mui-pull-left" style="padding-left:15px; line-height:40px;">快速注册</a>
+		  <a href="pages/forget_password.html" class="mui-pull-right" style="padding-right:15px; line-height:40px;">忘记密码?</a>
+		</div>
+	    <div class="mui-button-row">
+	        <button type="submit" data-loading-text="提交中..." style="width:60%; height:40px;" class="mui-btn mui-btn-primary">登录</button>
+	    </div>
+		
+	</form>
+</body>
+<script>
+	mui.plusReady(function() {
+		var loginForm = document.getElementById("loginForm");
+		loginForm.addEventListener("submit", function(e) {
+			mui(".mui-btn-primary").button('loading');
+		});
+	});
+</script>
+</html>
