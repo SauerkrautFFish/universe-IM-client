@@ -76,7 +76,6 @@
 				
 				var salt = 'chqm-uftg*498.aa81@1';
 				var password = md5(salt + firstPassword.value);
-				console.log(password);
 				mui.ajax(app.serverUrl + '/user/register',{
 					data:{
 						account: account.value,
@@ -88,11 +87,11 @@
 					type:'post',//HTTP请求类型
 					timeout: timeoutVal,//超时时间设置为10秒；
 					success:function(data){
-						if(data.status == 200) {
+						if(data.code == 0) {
 							mui.toast('注册成功!',{ duration:'short', type:'div' });
 							//跳转
 						} else {
-							mui.toast(data.msg,{ duration:'short', type:'div' });
+							mui.toast(data.message,{ duration:'short', type:'div' });
 						}
 					},
 					error:function(xhr,type,errorThrown){
@@ -118,13 +117,12 @@
 				}
 
 				// 1.发送验证码
-				verificationCode(account);
+				verificationCode();
 				// 2.倒计时
 				countDown(obj, waitTime);
 			}
 			
-			
-			function verificationCode(account) {
+			function verificationCode() {
 				// ajax请求
 				mui.ajax(app.serverUrl + '/user/sendRegisterCode',{
 					data:{
@@ -134,10 +132,11 @@
 					type:'post',//HTTP请求类型
 					timeout:timeoutVal,//超时时间设置为10秒；
 					success:function(data){
-						if(data.status == 200) {
+						console.log(data);
+						if(data.code == 0) {
 							mui.toast('发送成功!',{ duration:'short', type:'div' });
 						} else {
-							mui.toast(data.msg,{ duration:'short', type:'div' });
+							mui.toast(data.message,{ duration:'short', type:'div' });
 						}
 					},
 					error:function(xhr,type,errorThrown){
