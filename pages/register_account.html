@@ -39,7 +39,7 @@
 				<input type="text" id="emailcode" style="width: 35%;" placeholder="请输入验证码">
 			</div>
 		    <div class="mui-button-row">
-		        <button type="submit" style="width: 60%;" class="mui-btn mui-btn-primary" >确认</button>
+		        <button type="submit" style="width: 60%;" class="mui-btn mui-btn-primary">确认</button>
 		    </div>
 		</form>
 		
@@ -54,6 +54,7 @@
 			var secondPassword = document.getElementById("secondPassword");
 			
 			var registerForm = document.getElementById("registerForm");
+			
 			
 			var emailCodeLen = 4;//验证码位数
 			var timeoutVal = 5000;//超时时间
@@ -77,13 +78,14 @@
 				var salt = 'chqm-uftg*498.aa81@1';
 				var password = md5(salt + firstPassword.value);
 				mui.ajax(app.serverUrl + '/user/register',{
-					data:{
+					data:  {
 						account: account.value,
 						password: password,
-						username: username.value,
-						emailcode: emailcode
+						nickname: username.value,
+						verifyCode: emailcode.value
 					},
 					dataType:'json',//服务器返回json格式数据
+					contentType : 'application/json',
 					type:'post',//HTTP请求类型
 					timeout: timeoutVal,//超时时间设置为10秒；
 					success:function(data){
@@ -154,7 +156,7 @@
 				// 不成功->服务器原因 邮箱已经存在
 			}
 			
-			function verifyBeforeRegister(/*account, username, firstPassword, secondPassword*/) {
+			function verifyBeforeRegister() {
 				// 是否输入必备信息
 				if(!app.isNotNull(username.value) || !app.isNotNull(firstPassword.value)) {
 					mui.toast('信息不能为空!',{ duration:'short', type:'div' });
