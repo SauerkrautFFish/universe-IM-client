@@ -16,6 +16,12 @@
 		<script type="text/javascript">
 			mui.init();
 		</script>
+		
+		<header class="mui-bar mui-bar-nav title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title title-color">注册</h1>
+		</header>
+		
 		<form class="mui-input-group" id="registerForm">
 		    <div class="mui-input-row">
 		        <label>账号(邮箱)</label>
@@ -57,7 +63,6 @@
 			
 			
 			var emailCodeLen = 4;//验证码位数
-			var timeoutVal = 5000;//超时时间
 			registerForm.addEventListener("submit", function(e) {
 				e.preventDefault();//防表单刷新
 				
@@ -74,24 +79,28 @@
 					mui.toast('验证码位数为' + emailCodeLen,{ duration:'short', type:'div' });
 					return;
 				}
-				
-				var salt = 'chqm-uftg*498.aa81@1';
-				var password = md5(salt + firstPassword.value);
+				//获取每台设备上的唯一cid
+				var cid = plus.push.getClientInfo().clientid;
+				var password = md5(app.SALT + firstPassword.value);
 				mui.ajax(app.serverUrl + '/user/register',{
 					data:  {
 						account: account.value,
 						password: password,
 						nickname: username.value,
+						cid: cid,
 						verifyCode: emailcode.value
 					},
 					dataType:'json',//服务器返回json格式数据
 					contentType : 'application/json',
 					type:'post',//HTTP请求类型
-					timeout: timeoutVal,//超时时间设置为10秒；
+					timeout: app.TIMEOUTVAL,//超时时间设置为10秒；
 					success:function(data){
 						if(data.code == 0) {
 							mui.toast('注册成功!',{ duration:'short', type:'div' });
-							//跳转
+							// 注册完缓存账号
+							app.setGlobalCache(app.USERINFO, {"account": account.value});
+							// 跳转到登录页面
+							mui.openWindow({url:'../login.html',id:'login'});
 						} else {
 							mui.toast(data.message,{ duration:'short', type:'div' });
 						}
@@ -111,7 +120,6 @@
 			});
 			
 			// 获取验证码
-			var waitTime = 4;
 			function clickSendCodeBtn(obj) {
 				// 必备信息是否输入
 				if(!verifyBeforeRegister()) {
@@ -121,7 +129,7 @@
 				// 1.发送验证码
 				verificationCode();
 				// 2.倒计时
-				countDown(obj, waitTime);
+				countDown(obj, app.WAITTIME);
 			}
 			
 			function verificationCode() {
@@ -132,7 +140,7 @@
 					},
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型
-					timeout:timeoutVal,//超时时间设置为10秒；
+					timeout:app.TIMEOUTVAL,//超时时间设置为10秒；
 					success:function(data){
 						console.log(data);
 						if(data.code == 0) {
@@ -191,9 +199,7 @@
 					}, 1000);
 				}
 			}
-			function sendVerificationCode() {
-				
-			}
+			
 		</script>
 	</body>
 

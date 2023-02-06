@@ -11,6 +11,7 @@
     <script type="text/javascript" charset="utf-8">
       	mui.init();
     </script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/blueimp-md5/2.18.0/js/md5.min.js"></script>
 </head>
 <body>	
 	
@@ -19,18 +20,18 @@
 	<form class="mui-input-group" id="loginForm">
 	    <div class="mui-input-row">
 			<span class="mui-icon iconfont icon-zhanghaodenglu"></span>
-			<input type="text" class="mui-input-clear" style="width:80%;" placeholder="请输入邮箱......">
+			<input type="text" id="account" class="mui-input-clear" style="width:80%;" placeholder="请输入邮箱......">
 	    </div>
 	    <div class="mui-input-row">
 			<span class="mui-icon iconfont icon-mima"></span>
-	        <input type="password" class="mui-input-password" style="width:80%;" placeholder="请输入密码......">
+	        <input type="password" id="password" class="mui-input-password" style="width:80%;" placeholder="请输入密码......">
 	    </div>
 		<div class="mui-input-row">
 		  <a href="pages/register_account.html" class="mui-pull-left" style="padding-left:15px; line-height:40px;">快速注册</a>
 		  <a href="pages/forget_password.html" class="mui-pull-right" style="padding-right:15px; line-height:40px;">忘记密码?</a>
 		</div>
 	    <div class="mui-button-row">
-	        <button type="submit" data-loading-text="提交中..." style="width:60%; height:40px;" class="mui-btn mui-btn-primary">登录</button>
+	        <button type="submit" data-loading-text="提交中..." style="width:60%; height:40px;" class="mui-btn mui-btn-primary login">登录</button>
 	    </div>
 		
 	</form>
@@ -38,8 +39,49 @@
 <script>
 	mui.plusReady(function() {
 		var loginForm = document.getElementById("loginForm");
+		var account = document.getElementById("account");
+		var password = document.getElementById("password");
 		loginForm.addEventListener("submit", function(e) {
-			mui(".mui-btn-primary").button('loading');
+			mui(".login").button('loading');
+			var psswd = md5(app.SALT + password.value);
+			//获取每台设备上的唯一cid
+			var cid = plus.push.getClientInfo().clientid;
+			mui.ajax(app.serverUrl + "/user/login",{
+				data:{
+					account: account.value,
+					password: psswd,
+					cid: cid
+				},
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:app.TIMEOUTVAL,//超时时间设置为10秒；
+				success:function(data){
+					if(data.code == 0) {
+						mui.toast('登录成功!',{ duration:'short', type:'div' });
+						// 缓存账号
+						app.setGlobalCache(app.USERINFO, {"account": account.value});
+						// TOKEN缓存之类的操作
+						
+						
+						
+						
+						mui(".login").button('reset');
+						// 跳转到主页面
+						mui.openWindow({url:'../index.html',id:'index'});
+					} else {
+						mui.toast(data.message,{ duration:'short', type:'div' });
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					if(type=="timeout"){
+						mui.toast('连接超时!',{ duration:'short', type:'div' });
+					}else if(type=="error"){
+						mui.toast('连接出错!',{ duration:'short', type:'div' });
+					} else {
+						mui.toast("服务器未响应!",{ duration:'short', type:'div' });
+					}
+				}
+			});
 		});
 	});
 </script>
