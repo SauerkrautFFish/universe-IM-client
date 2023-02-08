@@ -1,11 +1,12 @@
 window.app = {
 	
-	serverUrl : "http://127.0.0.1:8068",
+	serverUrl : "https://127.0.0.1:8080",
 	
 	USERINFO: "userInfo",
 	TIMEOUTVAL: 5000,//超时时间
 	WAITTIME: 4,
 	SALT: 'chqm-uftg*498.aa81@1',
+	ACC_TOKEN: "ACCESS_TOKEN",
 	isNotNull: function(str) {
 		if (str != null && str != "" && str != undefined) {
 			return true;
@@ -20,11 +21,11 @@ window.app = {
 	
 	setGlobalCache: function(key, value){
 		var valueStr = JSON.stringify(value);
-		plus.storage.setItem(key",valueStr);
+		window.localStorage.setItem(key, valueStr);
 	},
 	
 	getGlobalCache: function(key){
-		var value = plus.storage.getItem(key);
+		var value = window.localStorage.getItem(key);
 		return JSON.parse(value);
 	}
 }

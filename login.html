@@ -4,13 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title></title>
-    <script src="js/mui.min.js"></script>
-    <link href="css/mui.min.css" rel="stylesheet"/>
+    <script src="js/mui.js"></script>
+	<script src="js/app.js"></script>
+    <link href="css/mui.css" rel="stylesheet"/>
 	<link href="icon_font/iconfont.css" rel="stylesheet"/>
 	<link href="css/login.css" rel="stylesheet"/>
-    <script type="text/javascript" charset="utf-8">
-      	mui.init();
-    </script>
+    
 	<script src="https://cdn.bootcdn.net/ajax/libs/blueimp-md5/2.18.0/js/md5.min.js"></script>
 </head>
 <body>	
@@ -35,54 +34,64 @@
 	    </div>
 		
 	</form>
-</body>
-<script>
-	mui.plusReady(function() {
+	
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		
 		var loginForm = document.getElementById("loginForm");
 		var account = document.getElementById("account");
 		var password = document.getElementById("password");
-		loginForm.addEventListener("submit", function(e) {
-			mui(".login").button('loading');
-			var psswd = md5(app.SALT + password.value);
-			//获取每台设备上的唯一cid
-			var cid = plus.push.getClientInfo().clientid;
-			mui.ajax(app.serverUrl + "/user/login",{
-				data:{
-					account: account.value,
-					password: psswd,
-					cid: cid
-				},
-				dataType:'json',//服务器返回json格式数据
-				type:'post',//HTTP请求类型
-				timeout:app.TIMEOUTVAL,//超时时间设置为10秒；
-				success:function(data){
-					if(data.code == 0) {
-						mui.toast('登录成功!',{ duration:'short', type:'div' });
-						// 缓存账号
-						app.setGlobalCache(app.USERINFO, {"account": account.value});
-						// TOKEN缓存之类的操作
-						
-						
-						
-						
+		
+		
+			console.log("pre cid");
+			loginForm.addEventListener("submit", function(e) {
+				console.log("pre cid");
+				e.preventDefault();//防表单刷新
+				mui(".login").button('loading');
+				var psswd = md5(app.SALT + password.value);
+				//获取每台设备上的唯一cid
+				console.log("pre cid");
+				// todo 这个在谷歌页面执行不了，貌似
+				var cid = "";//plus.push.getClientInfo().clientid
+				console.log("cid:" + cid);
+				mui.ajax(app.serverUrl + "/user/login",{
+					data:{
+						account: account.value,
+						password: psswd,
+						cid: cid
+					},
+					contentType : 'application/json',
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:app.TIMEOUTVAL,//超时时间设置为10秒；
+					success:function(data){
 						mui(".login").button('reset');
-						// 跳转到主页面
-						mui.openWindow({url:'../index.html',id:'index'});
-					} else {
-						mui.toast(data.message,{ duration:'short', type:'div' });
+						if(data.code == 0) {
+							mui.toast('登录成功!',{ duration:'short', type:'div' });
+							// 缓存账号
+							app.setGlobalCache(app.USERINFO, {"account": account.value});
+							// TOKEN缓存
+							app.setGlobalCache(app.ACC_TOKEN, data.data);
+							
+							// 跳转到主页面
+							mui.openWindow({url:'pages/index.html',id:'index'});
+						} else {
+							mui.toast(data.message,{ duration:'short', type:'div' });
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						mui(".login").button('reset');
+						if(type=="timeout"){
+							mui.toast('连接超时!',{ duration:'short', type:'div' });
+						}else if(type=="error"){
+							mui.toast('连接出错!',{ duration:'short', type:'div' });
+						} else {
+							mui.toast("服务器未响应!",{ duration:'short', type:'div' });
+						}
 					}
-				},
-				error:function(xhr,type,errorThrown){
-					if(type=="timeout"){
-						mui.toast('连接超时!',{ duration:'short', type:'div' });
-					}else if(type=="error"){
-						mui.toast('连接出错!',{ duration:'short', type:'div' });
-					} else {
-						mui.toast("服务器未响应!",{ duration:'short', type:'div' });
-					}
-				}
+				});
 			});
-		});
-	});
-</script>
+	
+	</script>
+</body>
 </html>
