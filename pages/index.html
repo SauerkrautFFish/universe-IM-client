@@ -218,19 +218,14 @@
 						<a class="mui-navigate-right">
 							<img class="mui-media-object mui-pull-left" src="../images/default.jpg">
 							<div class="mui-media-body">
-								昵称:{}
-								<p class='mui-ellipsis'>星球id={}</p>
+								<span id="nickname">昵称:</span> 
+								<p class='mui-ellipsis' id="xqId">星球id: </p>
 							</div>
 						</a>
 					</li>
 				</ul>
 				<div class="title"></div>
 				<ul class="mui-table-view">
-					<li class="mui-table-view-cell">
-						<a>
-							星球币:{}
-						</a>
-					</li>
 					<li class="mui-table-view-cell">
 						<a>
 							伽马之光:{}
@@ -263,9 +258,42 @@
 		</div>
 	</body>
 	<script src="../js/mui.js"></script>
+	<script src="../js/app.js"></script>
 	<script>
 		mui.init({
 			swipeBack:true //启用右滑关闭功能
+		});
+		
+		var xqId = document.getElementById("xqId");
+		var nickname = document.getElementById("nickname");
+		mui.ajax(app.serverUrl + '/user/getUserInfo',{
+			headers: {
+				"access_token": app.getGlobalCache(app.ACC_TOKEN)
+			},
+			data:{
+				
+			},
+			dataType:'json',//服务器返回json格式数据
+			type:'post',//HTTP请求类型
+			timeout:app.TIMEOUTVAL,//超时时间设置为10秒；
+			success:function(data){
+				if(data.code == 0) {
+					xqId.innerHTML = "星球id: " + data.data.id;
+					nickname.innerHTML = "昵称: " + data.data.nickname;
+					// 头像和二维码的src
+				} else {
+					mui.toast(data.message,{ duration:'short', type:'div' });
+				}
+			},
+			error:function(xhr,type,errorThrown){
+				if(type=="timeout"){
+					mui.toast('连接超时!',{ duration:'short', type:'div' });
+				}else if(type=="error"){
+					mui.toast('连接出错!',{ duration:'short', type:'div' });
+				} else {
+					mui.toast("服务器未响应!",{ duration:'short', type:'div' });
+				}
+			}
 		});
 	</script>
 </html>

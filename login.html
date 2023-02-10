@@ -42,18 +42,14 @@
 		var account = document.getElementById("account");
 		var password = document.getElementById("password");
 		
-		
-			console.log("pre cid");
 			loginForm.addEventListener("submit", function(e) {
-				console.log("pre cid");
 				e.preventDefault();//防表单刷新
 				mui(".login").button('loading');
 				var psswd = md5(app.SALT + password.value);
 				//获取每台设备上的唯一cid
-				console.log("pre cid");
+				
 				// todo 这个在谷歌页面执行不了，貌似
-				var cid = "";//plus.push.getClientInfo().clientid
-				console.log("cid:" + cid);
+				var cid = "";//todo plus.push.getClientInfo().clientid
 				mui.ajax(app.serverUrl + "/user/login",{
 					data:{
 						account: account.value,
