@@ -6,6 +6,62 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "5831724",
+      "name": "扫码",
+      "font_class": "saoma",
+      "unicode": "e68c",
+      "unicode_decimal": 59020
+    },
+    {
+      "icon_id": "8682254",
+      "name": "添加用户",
+      "font_class": "tianjiayonghu",
+      "unicode": "e683",
+      "unicode_decimal": 59011
+    },
+    {
+      "icon_id": "25996156",
+      "name": "交友",
+      "font_class": "a-zu6540",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "27402333",
+      "name": "二维码",
+      "font_class": "erweima",
+      "unicode": "ee15",
+      "unicode_decimal": 60949
+    },
+    {
+      "icon_id": "1318350",
+      "name": "宇宙星球-14",
+      "font_class": "yuzhouxingqiu-14",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "1318352",
+      "name": "宇宙星球-17",
+      "font_class": "yuzhouxingqiu-17",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "1318354",
+      "name": "宇宙星球-19",
+      "font_class": "yuzhouxingqiu-19",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "1318358",
+      "name": "宇宙星球-23",
+      "font_class": "yuzhouxingqiu-23",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
       "icon_id": "1279441",
       "name": "密码",
       "font_class": "mima",
